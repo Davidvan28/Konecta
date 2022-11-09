@@ -6,12 +6,11 @@
  $DB = new DB();
 
 //realizamos una consulta a la base de datos para traer los datos de los productos
-  $producto = $DB->connect()->prepare("SELECT ID, Nombre_producto, Referencia, Precio, Peso, Categoria, Stock, Fecha_creacion FROM ventas INNER JOIN productos ON ventas.fk_producto = Productos.ID WHERE 1");
+  $producto = $DB->connect()->prepare("SELECT ID, id_ventas, Nombre_Producto, Precio, Cantidad_venta FROM ventas INNER JOIN productos ON ventas.fk_producto = Productos.ID WHERE 1");
  $producto->execute();
 
 //se evalua si existe submit para empezar a evaluar el registro de la venta
  if (isset($_POST['submit'])) {
- 	 
  	 $id = $_POST['id'];
  	 $cantidad = $_POST['cantidad'];
  	 //se realiza una consulta para saber la cantidad de productos en stock
