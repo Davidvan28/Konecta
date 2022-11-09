@@ -1,0 +1,7 @@
+CONSULTAS MYSQL
+
+ 1.Realizar una consulta que permita conocer cuál es el producto que más stock tiene.
+ select MAX(Stock), Nombre_Producto ,ID from productos
+
+2.Realizar una consulta que permita conocer cuál es el producto más vendido.
+ select MAX(Cantidad_venta), Nombre_Producto ,id_ventas from ventas INNER JOIN productos ON productos.ID = ventas.fk_producto
