@@ -1,27 +1,33 @@
 <?php
 
+//incluimos la base de datos
  include_once("includes/db.php");
+ //instanciamos la clase DB
  $DB = new DB();
 
-  $producto = $DB->connect()->prepare("SELECT * FROM ventas INNER JOIN productos ON ventas.fk_producto = Productos.ID WHERE 1");
+//realizamos una consulta a la base de datos para traer los datos de los productos
+  $producto = $DB->connect()->prepare("SELECT ID, Nombre_producto, Referencia, Precio, Peso, Categoria, Stock, Fecha_creacion FROM ventas INNER JOIN productos ON ventas.fk_producto = Productos.ID WHERE 1");
  $producto->execute();
 
+//se evalua si existe submit para empezar a evaluar el registro de la venta
  if (isset($_POST['submit'])) {
  	 
  	 $id = $_POST['id'];
  	 $cantidad = $_POST['cantidad'];
- 	 echo $cantidad;
- 	 $consulta = $DB->connect()->prepare("SELECT * FROM productos WHERE ID = :id");
+ 	 //se realiza una consulta para saber la cantidad de productos en stock
+ 	 $consulta = $DB->connect()->prepare("SELECT ID, Stock FROM productos WHERE ID = :id");
  	 $consulta->bindParam(":id", $id);
  	 $consulta->execute();
  	 $venta = $consulta->fetchAll(PDO::FETCH_ASSOC);
- 	 $id_venta = intval($venta[0]['Stock']);
- 	 $venta_cantidad = intval($cantidad);
-
-
+ 	 
+ //se evalua si la consulta anterior tiene registros
  	 if ($venta) {
+
+ 	 	$id_venta = $venta[0]['Stock'];
+ 	    $venta_cantidad = $cantidad;
+ 	  //Se evalua si la cantidad comprada supera la cantidad de productos en stock
  	 	if (($id_venta - $venta_cantidad) >= 0) {
- 	 	
+ 	 //si la cantidad de productos comprados no supera la cantidad de articulos en stock entonces se actualiza la cantidad en stock y agrga la cantidad comprada a la tabla ventas
  	 	$total = $id_venta - $venta_cantidad;
         $actualizar = $DB->connect()->prepare('UPDATE `productos` SET `Stock`= :stock WHERE ID = :id ');
  	 	 $actualizar->bindParam(":id", $id);
@@ -35,29 +41,25 @@
         echo "<script>alert('Venta registrada'); location.href = 'venta.php';</script>";
         
 
- 	 }else if($venta[0]['Stock'] == 0){
+ 	 }else if($venta[0]['Stock'] == 0){ //Se evalua si la cantidad de productos en stock es igual a cero
         echo "<script>alert('No hay productos en stock '); location.href = 'venta.php';</script>";
- 	 }else{
+ 	 }else{ //si la resta entre la cantidad comprada y la cantidad de articulos en stock da menos de cero entonces no se realiza la venta
  	 	echo "<script>alert('La cantidad supera el stock '); location.href = 'venta.php';</script>";
  	 }
 
- 	 }else{
+ 	 }else{//se informa al usuario en caso de que el id no exista
  	 	echo "<script>alert('no existe este producto'); location.href = 'venta.php';</script>";
  	 };
 
-
+//se cierran las consultas realizadas 
  	 $cargar->closeCursor(); 
 	 $cargar = null; 
 	 $consulta->closeCursor(); 
 	 $consulta = null;
 	 $actualizar->closeCursor(); 
 	 $actualizar = null;  
-
  	 
  }
-
-
-
 
 ?>
 <!DOCTYPE html>

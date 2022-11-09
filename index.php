@@ -1,18 +1,17 @@
 <?php 
 
+//incluimos la clase productos
 include_once("includes/crear.php");
-$producto = new Productos();
-
-include_once("includes/db.php");
-$BD = new DB();
+$producto = new Productos(); //instanciamos la clase productos
 
 
+//se realiza una consulta en la base de datos 
 $conectar = $producto->CargarInfo(" WHERE 1");
 
 
-
+//Se evalua si existe eliminar
 if (isset($_POST['eliminar'])) {
-
+  //si existe eliminar se procede a eliminar la fila correspondiente al id seleccionado
 	$eliminar = $_POST['eliminar'];
 	$producto->EliminarDatos($eliminar);
 	if ($producto) {
@@ -24,7 +23,7 @@ if (isset($_POST['eliminar'])) {
 	
 
 };
-
+//se evalua si existe editar para modificar los valores correspondientes en la table productos
 if (isset($_POST['editar'])) {
 	$idEditar = (int) $_POST['ID'];
 	$nombre = $_POST['nombre'];
@@ -130,6 +129,7 @@ if (isset($_POST['editar'])) {
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
 <script type="text/javascript">
+//se utiliza una funcion ajax predefinida para poder traer los datos correspondientes al ID incrustado en el boton EDITAR y mostrarlos en una ventana modal
   function  modal(consultaT){
   $.ajax({
     url: 'includes/modal.php',

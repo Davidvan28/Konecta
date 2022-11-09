@@ -1,8 +1,6 @@
 <?php
   
   include_once("includes/crear.php");
-  
-
   $producto = new Productos();
 
 ?>
