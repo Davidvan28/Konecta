@@ -10,10 +10,11 @@ Ahora podrá ingresar al navegador y en la url debe poner localhost más la ruta
 Ahora podrá navegar por las opciones del sistema; en el inicio encontrara la lista de productos agregados a la base de datos los cuales podrá modificar o eliminar, también podrá agregar un producto nuevo a la base de datos, gestionar una venta o ver el listado de ventas.
 
 
-CONSULTAS MYSQL 
-1.Realizar una consulta que permita conocer cuál es el producto que más stock tiene.
-select MAX(Stock), Nombre_Producto ,ID from productos
+CONSULTAS MYSQL
+
+ 1.Realizar una consulta que permita conocer cuál es el producto que más stock tiene.
+ select MAX(Stock), Nombre_Producto ,ID from productos
 
 2.Realizar una consulta que permita conocer cuál es el producto más vendido.
-select MAX(Cantidad_venta), Nombre_Producto ,id_ventas from ventas INNER JOIN productos ON productos.ID = ventas.fk_producto WHERE 1
+ select MAX(Cantidad_venta), Nombre_Producto ,id_ventas from ventas INNER JOIN productos ON productos.ID = ventas.fk_producto
 
